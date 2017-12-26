@@ -13,7 +13,7 @@ namespace Cleartrip.Library.Features.Interfaces
         bool AddUser(User user);
         DateTime IssueBook(Book book, User user);
         bool ReturnBook(Book book);
-        bool LimitBorrow(int userId);
-        void SearchByUser(string user);
+        bool LimitBorrow(Guid userId);
+        IList<User> SearchByUser(string user);
     }
 }

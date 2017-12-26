@@ -59,5 +59,15 @@ namespace Cleartrip.Library.Features.Implementation
                     getUser.BorrowCapacity -= 1;
             }
         }
+
+        IList<User> IUserRepository.SearchByUser(string userName)
+        {
+            return _users.Where(u => u.FirstName.ToLowerInvariant().Contains(userName) || u.LastName.ToLowerInvariant().Contains(userName)).ToList();
+        }
+
+        public IList<User> GetAllUsers()
+        {
+            return _users;
+        }
     }
 }

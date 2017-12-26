@@ -34,7 +34,12 @@ namespace Cleartrip.Main
             var check = libOperations.AddUser(user);
             libOperations.AddUser(user2);
             var userCapacity = userRepo.GetUserById(user.Id).BorrowCapacity;
-            Console.WriteLine($"User - {user.FirstName + " " + user.LastName} borrow capacity - {user.BorrowCapacity}");
+            var users = libOperations.SearchByUser("doe");
+            foreach (var usr in users)
+            {
+                Console.WriteLine($"User Name- {usr.FirstName + " " + usr.LastName}, Borrow capacity - {usr.BorrowCapacity}");
+            }
+
             try
             {
                 Console.WriteLine($"Test to check add same user - Should return Exception");
@@ -75,18 +80,40 @@ namespace Cleartrip.Main
 
             libOperations.AddBook(book);
             libOperations.AddBook(book2);
+            Console.WriteLine();
+            Console.WriteLine("Books");
+            Console.WriteLine("-----");
+            foreach (var b in bookRepo.GetAllBooks())
+            {
+                Console.WriteLine($"Book Name - {b.Name}, Author - {b.Author}, ISBN - {b.ISBN}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Users");
+            Console.WriteLine("-----");
+            foreach (var u in userRepo.GetAllUsers())
+            {
+                Console.WriteLine($"User - {u.FirstName + " " + u.LastName}, IsBorrowLimited - {u.IsBorrowLimited}, BorrowCapacity - {u.BorrowCapacity} ");
+            }
+            Console.WriteLine();
             var dt = libOperations.IssueBook(book, user);
+            var dt2 = libOperations.IssueBook(book2, user2);
             userCapacity = userRepo.GetUserById(user.Id).BorrowCapacity;
             Console.WriteLine($"User - {user.FirstName + " " + user.LastName} borrow capacity - {user.BorrowCapacity}");
             if (dt != DateTime.MinValue)
                 Console.WriteLine($"Book - {book.Name} has been issued to User - {user.FirstName + " " + user.LastName}, with a return date of - {dt}");
+            if (dt2 != DateTime.MinValue)
+                Console.WriteLine($"Book - {book2.Name} has been issued to User - {user2.FirstName + " " + user2.LastName}, with a return date of - {dt2}");
             var isReturned = libOperations.ReturnBook(book);
             if (isReturned)
-                Console.WriteLine($"Book => {book.Name}, has been returned.");
+                Console.WriteLine($"Book => {book.Name}, has been returned by User - {user.FirstName + " " + user.LastName}.");
             userCapacity = userRepo.GetUserById(user.Id).BorrowCapacity;
             Console.WriteLine($"User - {user.FirstName + " " + user.LastName} borrow capacity - {user.BorrowCapacity}");
             isReturned = libOperations.ReturnBook(book);
             Console.WriteLine($"Book is retuerned, no more pending state.Should be false => {isReturned == false}");
+
+            isReturned = libOperations.ReturnBook(book2);
+            if (isReturned)
+                Console.WriteLine($"Book => {book2.Name}, has been returned by User - {user2.FirstName + " " + user2.LastName}.");
             Console.ReadLine();
         }
     }

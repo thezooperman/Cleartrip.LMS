@@ -14,5 +14,6 @@ namespace Cleartrip.Library.Features.Interfaces
         IList<Book> SearchByAuthor(string author);
         bool AddBook(Book book);
         bool UpdateBook(Book book, bool status);
+        IList<Book> GetAllBooks();
     }
 }

@@ -13,5 +13,7 @@ namespace Cleartrip.Library.Features.Interfaces
         bool LimitBorrowCapacity(User user);
         User GetUserById(Guid userId);
         void UpdateBorrowCapacity(User user, bool addCapacity);
+        IList<User> SearchByUser(string userName);
+        IList<User> GetAllUsers();
     }
 }

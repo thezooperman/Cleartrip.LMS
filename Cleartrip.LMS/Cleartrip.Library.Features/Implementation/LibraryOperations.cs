@@ -96,14 +96,17 @@ namespace Cleartrip.Library.Features.Implementation
             return isReturned;
         }
 
-        public bool LimitBorrow(int userId)
+        public bool LimitBorrow(Guid userId)
         {
-            throw new NotImplementedException();
+            var isLimited = false;
+            var getUser = _userRepo.GetUserById(userId);
+            _userRepo.LimitBorrowCapacity(getUser);
+            return isLimited;
         }
 
-        public void SearchByUser(string user)
+        public IList<User> SearchByUser(string user)
         {
-            throw new NotImplementedException();
+            return _userRepo.SearchByUser(user);
         }
     }
 }

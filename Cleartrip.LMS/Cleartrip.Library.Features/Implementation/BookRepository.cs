@@ -46,5 +46,10 @@ namespace Cleartrip.Library.Features.Implementation
 
             return isUpdated;
         }
+
+        public IList<Book> GetAllBooks()
+        {
+            return _books;
+        }
     }
 }

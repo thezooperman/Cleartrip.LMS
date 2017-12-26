@@ -64,7 +64,7 @@ namespace Cleartrip.Library.Features.Implementation
                     var tran = _transaction.CreateTransaction(queryBook, user);
                     returnDate = tran.DueDate;
                     _bookRepo.UpdateBook(book, false);
-                    user.BorrowCapacity -= 1;
+                    _userRepo.UpdateBorrowCapacity(user, false);
                 }
             }
             return returnDate;
@@ -76,14 +76,15 @@ namespace Cleartrip.Library.Features.Implementation
             if (book != null)
             {
                 var queryTran = _transaction.FetchTransactionsByBook(book).OrderByDescending(t => t.DateOfIssue).FirstOrDefault();
-                var queryBook = _bookRepo.SearchByTitle(book.Name).Where(b => b.Id == book.Id).FirstOrDefault();
-                if (queryTran != null)
+                var queryBook = _bookRepo.SearchByTitle(book.Name).Where(b => b.Id == book.Id && b.IsAvailable == false).FirstOrDefault();
+                if (queryBook != null && queryTran != null)
                 {
                     var queryUser = _userRepo.GetUserById(queryTran.UserId);
                     if (queryTran.DueDate >= DateTime.UtcNow)
                     {
                         _transaction.CreateTransaction(book, queryUser);
                         _bookRepo.UpdateBook(book, true);
+                        _userRepo.UpdateBorrowCapacity(queryUser, true);
                     }
                     else
                     {

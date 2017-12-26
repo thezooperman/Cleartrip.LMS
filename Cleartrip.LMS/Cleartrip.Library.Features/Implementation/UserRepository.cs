@@ -27,7 +27,7 @@ namespace Cleartrip.Library.Features.Implementation
                 isUserAdded = true;
             }
             else
-                throw new ArgumentException($"User - {user}, is already added.");
+                throw new ArgumentException($"User - {user.FirstName + " " + user.LastName}, is already added.");
             return isUserAdded;
         }
 
@@ -48,9 +48,16 @@ namespace Cleartrip.Library.Features.Implementation
             return _users.Where(u => u.Id == userId).FirstOrDefault();
         }
 
-        public void UpdateBorrowCapacity(User user)
+        public void UpdateBorrowCapacity(User user, bool addCapacity)
         {
-            ;
+            var getUser = _users.Where(a => a.Id == user.Id).FirstOrDefault();
+            if (getUser != null)
+            {
+                if (addCapacity)
+                    getUser.BorrowCapacity += 1;
+                else
+                    getUser.BorrowCapacity -= 1;
+            }
         }
     }
 }

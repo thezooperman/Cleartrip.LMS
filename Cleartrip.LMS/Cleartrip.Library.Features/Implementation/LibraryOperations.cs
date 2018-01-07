@@ -108,5 +108,10 @@ namespace Cleartrip.Library.Features.Implementation
         {
             return _userRepo.SearchByUser(user);
         }
+
+        public IList<Transaction> GetTransactionsByUser(User user)
+        {
+            return _transaction.FetchTransactionsByUser(user);
+        }
     }
 }

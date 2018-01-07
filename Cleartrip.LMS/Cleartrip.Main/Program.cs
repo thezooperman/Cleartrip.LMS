@@ -114,6 +114,19 @@ namespace Cleartrip.Main
             isReturned = libOperations.ReturnBook(book2);
             if (isReturned)
                 Console.WriteLine($"Book => {book2.Name}, has been returned by User - {user2.FirstName + " " + user2.LastName}.");
+            Console.WriteLine($"\nGet all transactions by User - {user.FirstName + " " + user.LastName}");
+            Console.WriteLine("----------------------------------------");
+            foreach (var tran in libOperations.GetTransactionsByUser(user))
+            {
+                Console.WriteLine($"Book Id - {tran.BookId}, Issue Date - {tran.DateOfIssue}, Due Date - {tran.DueDate}");
+            }
+
+            Console.WriteLine($"\nGet all transactions by User - {user2.FirstName + " " + user2.LastName}");
+            Console.WriteLine("----------------------------------------");
+            foreach (var tran in libOperations.GetTransactionsByUser(user2))
+            {
+                Console.WriteLine($"Book Id - {tran.BookId}, Issue Date - {tran.DateOfIssue}, Due Date - {tran.DueDate}");
+            }
             Console.ReadLine();
         }
     }

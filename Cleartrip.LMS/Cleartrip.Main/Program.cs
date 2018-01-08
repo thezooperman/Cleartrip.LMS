@@ -1,10 +1,6 @@
 ﻿using Cleartrip.Library.Features.Implementation;
 using Cleartrip.Library.Features.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cleartrip.Main
 {
@@ -74,12 +70,21 @@ namespace Cleartrip.Main
                 TypeOfBook = BookType.GeneralBook,
                 Name = "Robot Book"
             };
+            var book3 = new Book
+            {
+                Author = "Charles Dickens",
+                ISBN = String.Concat("ISBN-", Guid.NewGuid().ToString()),
+                Price = 165.42M,
+                TypeOfBook = BookType.GeneralBook,
+                Name = "Tale of Two Cities"
+            };
 
             var getBook = bookRepo.SearchByTitle(book.Name);
             Console.WriteLine($"Book - {book.Name} fetched from Book Repository");
 
             libOperations.AddBook(book);
             libOperations.AddBook(book2);
+            libOperations.AddBook(book3);
             Console.WriteLine();
             Console.WriteLine("Books");
             Console.WriteLine("-----");
@@ -114,16 +119,25 @@ namespace Cleartrip.Main
             isReturned = libOperations.ReturnBook(book2);
             if (isReturned)
                 Console.WriteLine($"Book => {book2.Name}, has been returned by User - {user2.FirstName + " " + user2.LastName}.");
-            Console.WriteLine($"\nGet all transactions by User - {user.FirstName + " " + user.LastName}");
-            Console.WriteLine("----------------------------------------");
-            foreach (var tran in libOperations.GetTransactionsByUser(user))
-            {
-                Console.WriteLine($"Book Id - {tran.BookId}, Issue Date - {tran.DateOfIssue}, Due Date - {tran.DueDate}");
-            }
+            
 
             Console.WriteLine($"\nGet all transactions by User - {user2.FirstName + " " + user2.LastName}");
             Console.WriteLine("----------------------------------------");
             foreach (var tran in libOperations.GetTransactionsByUser(user2))
+            {
+                Console.WriteLine($"Book Id - {tran.BookId}, Issue Date - {tran.DateOfIssue}, Due Date - {tran.DueDate}");
+            }
+            Console.WriteLine("\nTest Borrow Limit Blocked");
+            Console.WriteLine("-------------------------");
+            var issuedDt = libOperations.IssueBook(book3, user);
+            if (issuedDt != DateTime.MinValue)
+                Console.WriteLine($"Book - {book3.Name} has been issued to User - {user.FirstName + " " + user.LastName}, with a return date of - {issuedDt}");
+            var isBlocked = libOperations.LimitBorrow(user.Id);
+            libOperations.IssueBook(book2, user);
+
+            Console.WriteLine($"\nGet all transactions by User - {user.FirstName + " " + user.LastName}");
+            Console.WriteLine("----------------------------------------");
+            foreach (var tran in libOperations.GetTransactionsByUser(user))
             {
                 Console.WriteLine($"Book Id - {tran.BookId}, Issue Date - {tran.DateOfIssue}, Due Date - {tran.DueDate}");
             }

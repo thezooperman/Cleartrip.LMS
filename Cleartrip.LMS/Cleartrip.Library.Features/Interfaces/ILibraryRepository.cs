@@ -9,11 +9,6 @@ namespace Cleartrip.Library.Features.Interfaces
 {
     public interface ILibraryRepository
     {
-        bool AddBook(Book book);
-        bool AddUser(User user);
-        DateTime IssueBook(Book book, User user);
-        bool ReturnBook(Book book);
-        bool LimitBorrow(Guid userId);
-        IList<User> SearchByUser(string user);
+        //Placeholder for library logistics or other logging/auditing operations
     }
 }
